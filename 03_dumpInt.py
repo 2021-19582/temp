@@ -17,58 +17,83 @@ import sys
 #==================================================================
 # TODO 
 #==================================================================
-model = 'feIIIfeII_13o17eR_lunocloc' # FIXME
-norb = 13 # FIXME
-nelec = [9,8] # FIXME               # [ # of a, # of b ]
+# model = 'feIIIfeII_13o17eR_lunoloc' # FIXME
+# norb = 13 # FIXME
+# nelec = [9,8] # FIXME               # [ # of a, # of b ]
 
 # FIXME
-header =""" &FCI NORB=13,NELEC=17,MS2=0,
-  ORBSYM=1,1,1,1,1,1,1,1,1,1,1,1,1,
+# header =""" &FCI NORB=13,NELEC=17,MS2=0,
+#   ORBSYM=1,1,1,1,1,1,1,1,1,1,1,1,1,
+#   ISYM=1,
+#  &END
+# """
+
+model = 'feIIIfeII_22o35e_lunocloc'
+norb = 22
+nelec = [18,17]
+header =""" &FCI NORB=22,NELEC=35,MS2=0,
+  ORBSYM=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
   ISYM=1,
  &END
 """
 
 
-mychkfile_loc = '/home/amychoi7/git/pyxray2/data/fe2s2/' + 'feIIIfeII_lunocloc.h5'
-myFCIDUMPfile = 'FCIDUMP'
+# mychkfile_loc = '/home/amychoi7/git/pyxray2/data/fe2s2/' + 'feIIIfeII_lunocloc.h5'
+mychkfile_loc = 'feIIIfeII_lunocloc.h5'
+myFCIDUMPfile = 'FCIDUMP_lunocloc_22o35e'
 
 
 act_idx = [] # MO indexes of active space (in jmol order)
-act1 = [14,16,17] # feR 2p
-act2 = [89,90,91,93,96] # feL 3d
-act4 = [92,94,95,97,98] # feR 3d
+# lunocloc
+# act1 = [14,16,17] # feR 2p
+# act2 = [89,90,91,93,96] # feL 3d
+# act4 = [92,94,95,97,98] # feR 3d
 
-act_idx = act1+act2+act4
+# lunoloc
+# act1 = [12,13,15] # feR 2p
+# act2 = [90,92,93,95,89] # feL 3d
+# act4 = [98,91,94,96,97] # feR 3d
+
+# jmol order; base=1
+act0 = [11, 15, 16] # fe0 2p
+act1 = [12, 13, 14] # fe5 2p
+act2 = [81, 82, 83, 84, 85] # fe0 3d
+act3 = [86, 87, 88, 89, 90, 91] # Sc 3
+act4 = [92, 93, 94, 95, 96] # fe53
+# sp_sigma_terminal = [79,80,97,98] # feL 3d
+
+act_idx = act0 + act1 + act2 + act3 + act4 
+# + sp_sigma_terminal
 print(act_idx)
 
 #sys.exit()
 
-atom = """
-        Fe	5.48	1.15	-8.03
-        S	4.05	-0.61	-8.75
-        S	5.47	1.25	-5.58
-        S	4.63	3.28	-8.77
-        S	7.49	0.42	-9.04
-        Fe	6.04	-1.22	-9.63
-        S	5.75	-1.5	-12.05
-        S	6.86	-3.41	-8.86
-        C	5.51	4.45	-7.51
-        H	6.49	4.83	-7.92
-        H	4.87	5.33	-7.25
-        H	5.72	3.84	-6.59
-        C	3.6	1.7	-5.54
-        H	3.01	0.8	-5.82
-        H	3.28	2.06	-4.52
-        H	3.42	2.48	-6.31
-        C	5.21	-4.22	-9.46
-        H	5.1	-4.01	-10.55
-        H	5.21	-5.32	-9.26
-        H	4.37	-3.72	-8.93
-        C	7.63	-1.85	-12.24
-        H	7.9	-2.06	-13.31
-        H	8.2	-0.96	-11.86
-        H	7.89	-2.72	-11.59
-        """
+atom = """Fe     0.000000    0.000000    0.000000
+S      1.803282    1.552038   -0.015832
+S      0.179063   -1.428559    1.984882
+S      0.156011   -1.489475   -1.887889
+S     -1.799241    1.534638   -0.026753
+Fe     0.000000    2.913846    0.000000
+S      0.160778    4.414680   -1.934049
+S     -0.108071    4.429884    1.936840
+C     -0.912210   -2.963849   -1.242889
+H     -1.989184   -2.859451   -1.562462
+H     -0.525883   -3.945369   -1.615675
+H     -0.867825   -2.932516   -0.120549
+C      1.844709   -2.175921    1.378192
+H      2.638850   -1.403540    1.474465
+H      2.132068   -3.090314    1.972928
+H      1.736050   -2.422125    0.300567
+C      1.648897    5.101058    1.488302
+H      1.607332    5.507634    0.450386
+H      1.973504    5.885932    2.215354
+H      2.354855    4.241919    1.489893
+C     -1.554571    5.164995   -1.500913
+H     -1.840202    5.975229   -2.224677
+H     -2.318714    4.341993   -1.513295
+H     -1.506866    5.565668   -0.459671
+"""
+
 charge = -3
 twos = 9
 
@@ -233,7 +258,8 @@ mo = lib.chkfile.load(mychkfile_loc, 'luno/mo_coeff')
 
 
 from pyscf import mcscf         # MCSCF: Multi-configuration self-consistent field
-mc = mcscf.CASCI(scf.sfx2c(scf.RKS(mol)), norb, nelec)
+# mc = mcscf.CASCI(scf.sfx2c(scf.RKS(mol)), norb, nelec)
+mc = mcscf.CASCI(scf.ROHF(mol), norb, nelec)
 
                                 # CASCI: Complete Active Space config. integral
                                 #       wave ftn is L-comb of Slater-det.s
